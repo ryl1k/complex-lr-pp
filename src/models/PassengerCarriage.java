@@ -2,8 +2,6 @@ package models;
 
 import models.Enums.ComfortLevel;
 
-import java.util.UUID;
-
 
 public class PassengerCarriage extends Carriage {
     private ComfortLevel comfort;
