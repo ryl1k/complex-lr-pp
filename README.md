@@ -402,9 +402,6 @@ This project was developed as a series of university laboratory assignments:
 
 ## Code Quality
 
-- ✅ Clean, readable code with English identifiers and comments
-- ✅ Natural single-line comments (//) where they add value
-- ✅ Clean, readable code structure without emojis
 - ✅ Proper OOP principles (abstraction, inheritance, polymorphism)
 - ✅ Comprehensive error handling
 - ✅ Input validation on all user input
