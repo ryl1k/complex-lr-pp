@@ -1,8 +1,5 @@
 package model;
 
-/**
- * Підклас PassengerWagon для вагонів підвищеного класу
- */
 public class LuxuryWagon extends PassengerWagon {
     private boolean hasRestaurant;
     private boolean hasBar;

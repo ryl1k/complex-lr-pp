@@ -1,14 +1,12 @@
 package model;
 
-/**
- * Базовий клас вагона, що містить основні параметри
- */
-public class Wagon {
+// Base wagon class - abstract because we always want specific wagon types
+public abstract class Wagon {
     private int id;
     private String type;
     private int passengerCount;
     private double luggageWeight;
-    private int comfortLevel; // 1-5
+    private int comfortLevel; // 1-5 scale
 
     public Wagon(int id, String type, int passengerCount, double luggageWeight, int comfortLevel) {
         this.id = id;

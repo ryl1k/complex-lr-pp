@@ -1,12 +1,10 @@
 package cli.commands;
 
 import cli.Menu;
+import cli.InputValidator;
 import model.*;
 import java.util.Scanner;
 
-/**
- * Команда для додавання вагона з підменю типів вагонів
- */
 public class AddWagonCommand extends TrainCommand {
     public AddWagonCommand(Train train, Scanner scanner) {
         super(train, scanner);
@@ -14,21 +12,18 @@ public class AddWagonCommand extends TrainCommand {
 
     @Override
     public String getDesc() {
-        return "Додати вагон";
+        return "Add wagon";
     }
 
     @Override
     public void execute(String parameter) {
-        Menu wagonTypeMenu = new Menu("Виберіть тип вагона");
+        Menu wagonTypeMenu = new Menu("Select wagon type");
         wagonTypeMenu.addCommand("1", new AddSimpleWagonCommand(train, scanner));
         wagonTypeMenu.addCommand("2", new AddPassengerWagonCommand(train, scanner));
         wagonTypeMenu.addCommand("3", new AddLuxuryWagonCommand(train, scanner));
         wagonTypeMenu.run();
     }
 
-    /**
-     * Вложена команда для додавання звичайного вагона
-     */
     private static class AddSimpleWagonCommand implements cli.Command {
         private Train train;
         private Scanner scanner;
@@ -40,31 +35,23 @@ public class AddWagonCommand extends TrainCommand {
 
         @Override
         public String getDesc() {
-            return "Звичайний вагон";
+            return "Simple wagon";
         }
 
         @Override
         public void execute(String parameter) {
-            System.out.print("Введіть ID вагона: ");
-            int id = Integer.parseInt(scanner.nextLine());
-            System.out.print("Введіть тип вагона: ");
-            String type = scanner.nextLine();
-            System.out.print("Введіть кількість пасажирів: ");
-            int passengers = Integer.parseInt(scanner.nextLine());
-            System.out.print("Введіть вагу багажу (кг): ");
-            double luggage = Double.parseDouble(scanner.nextLine());
-            System.out.print("Введіть рівень комфорту (1-5): ");
-            int comfort = Integer.parseInt(scanner.nextLine());
+            int id = InputValidator.readPositiveInt(scanner, "Enter wagon ID: ");
+            String type = InputValidator.readNonEmptyString(scanner, "Enter wagon type: ");
+            int passengers = InputValidator.readPositiveInt(scanner, "Enter passenger count: ");
+            double luggage = InputValidator.readPositiveDouble(scanner, "Enter luggage weight (kg): ");
+            int comfort = InputValidator.readIntInRange(scanner, "Enter comfort level (1-5): ", 1, 5);
 
-            Wagon wagon = new Wagon(id, type, passengers, luggage, comfort);
+            Wagon wagon = new PassengerWagon(id, type, passengers, luggage, comfort, false, false);
             train.addWagon(wagon);
-            System.out.println("✓ Звичайний вагон додано!");
+            System.out.println("Simple wagon added!");
         }
     }
 
-    /**
-     * Вложена команда для додавання пасажирського вагона
-     */
     private static class AddPassengerWagonCommand implements cli.Command {
         private Train train;
         private Scanner scanner;
@@ -76,35 +63,25 @@ public class AddWagonCommand extends TrainCommand {
 
         @Override
         public String getDesc() {
-            return "Пасажирський вагон (WiFi, AC)";
+            return "Passenger wagon (WiFi, AC)";
         }
 
         @Override
         public void execute(String parameter) {
-            System.out.print("Введіть ID вагона: ");
-            int id = Integer.parseInt(scanner.nextLine());
-            System.out.print("Введіть тип вагона: ");
-            String type = scanner.nextLine();
-            System.out.print("Введіть кількість пасажирів: ");
-            int passengers = Integer.parseInt(scanner.nextLine());
-            System.out.print("Введіть вагу багажу (кг): ");
-            double luggage = Double.parseDouble(scanner.nextLine());
-            System.out.print("Введіть рівень комфорту (1-5): ");
-            int comfort = Integer.parseInt(scanner.nextLine());
-            System.out.print("Чи є WiFi? (true/false): ");
-            boolean wifi = Boolean.parseBoolean(scanner.nextLine());
-            System.out.print("Чи є кондиціонер? (true/false): ");
-            boolean ac = Boolean.parseBoolean(scanner.nextLine());
+            int id = InputValidator.readPositiveInt(scanner, "Enter wagon ID: ");
+            String type = InputValidator.readNonEmptyString(scanner, "Enter wagon type: ");
+            int passengers = InputValidator.readPositiveInt(scanner, "Enter passenger count: ");
+            double luggage = InputValidator.readPositiveDouble(scanner, "Enter luggage weight (kg): ");
+            int comfort = InputValidator.readIntInRange(scanner, "Enter comfort level (1-5): ", 1, 5);
+            boolean wifi = InputValidator.readBoolean(scanner, "Has WiFi? (true/false): ");
+            boolean ac = InputValidator.readBoolean(scanner, "Has air conditioning? (true/false): ");
 
             PassengerWagon wagon = new PassengerWagon(id, type, passengers, luggage, comfort, wifi, ac);
             train.addWagon(wagon);
-            System.out.println("✓ Пасажирський вагон додано!");
+            System.out.println("Passenger wagon added!");
         }
     }
 
-    /**
-     * Вложена команда для додавання люкс вагона
-     */
     private static class AddLuxuryWagonCommand implements cli.Command {
         private Train train;
         private Scanner scanner;
@@ -116,35 +93,25 @@ public class AddWagonCommand extends TrainCommand {
 
         @Override
         public String getDesc() {
-            return "Люкс вагон (ресторан, бар)";
+            return "Luxury wagon (restaurant, bar)";
         }
 
         @Override
         public void execute(String parameter) {
-            System.out.print("Введіть ID вагона: ");
-            int id = Integer.parseInt(scanner.nextLine());
-            System.out.print("Введіть тип вагона: ");
-            String type = scanner.nextLine();
-            System.out.print("Введіть кількість пасажирів: ");
-            int passengers = Integer.parseInt(scanner.nextLine());
-            System.out.print("Введіть вагу багажу (кг): ");
-            double luggage = Double.parseDouble(scanner.nextLine());
-            System.out.print("Введіть рівень комфорту (1-5): ");
-            int comfort = Integer.parseInt(scanner.nextLine());
-            System.out.print("Чи є WiFi? (true/false): ");
-            boolean wifi = Boolean.parseBoolean(scanner.nextLine());
-            System.out.print("Чи є кондиціонер? (true/false): ");
-            boolean ac = Boolean.parseBoolean(scanner.nextLine());
-            System.out.print("Чи є ресторан? (true/false): ");
-            boolean restaurant = Boolean.parseBoolean(scanner.nextLine());
-            System.out.print("Чи є бар? (true/false): ");
-            boolean bar = Boolean.parseBoolean(scanner.nextLine());
-            System.out.print("Введіть ціну за місце: ");
-            double price = Double.parseDouble(scanner.nextLine());
+            int id = InputValidator.readPositiveInt(scanner, "Enter wagon ID: ");
+            String type = InputValidator.readNonEmptyString(scanner, "Enter wagon type: ");
+            int passengers = InputValidator.readPositiveInt(scanner, "Enter passenger count: ");
+            double luggage = InputValidator.readPositiveDouble(scanner, "Enter luggage weight (kg): ");
+            int comfort = InputValidator.readIntInRange(scanner, "Enter comfort level (1-5): ", 1, 5);
+            boolean wifi = InputValidator.readBoolean(scanner, "Has WiFi? (true/false): ");
+            boolean ac = InputValidator.readBoolean(scanner, "Has air conditioning? (true/false): ");
+            boolean restaurant = InputValidator.readBoolean(scanner, "Has restaurant? (true/false): ");
+            boolean bar = InputValidator.readBoolean(scanner, "Has bar? (true/false): ");
+            double price = InputValidator.readPositiveDouble(scanner, "Enter price per seat: ");
 
             LuxuryWagon wagon = new LuxuryWagon(id, type, passengers, luggage, comfort, wifi, ac, restaurant, bar, price);
             train.addWagon(wagon);
-            System.out.println("✓ Люкс вагон додано!");
+            System.out.println("Luxury wagon added!");
         }
     }
 }

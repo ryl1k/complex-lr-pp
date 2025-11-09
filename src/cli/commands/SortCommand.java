@@ -5,9 +5,6 @@ import model.Train;
 import service.TrainService;
 import java.util.Scanner;
 
-/**
- * Команда для сортування вагонів з підменю
- */
 public class SortCommand extends TrainCommand {
     private TrainService trainService;
 
@@ -18,20 +15,17 @@ public class SortCommand extends TrainCommand {
 
     @Override
     public String getDesc() {
-        return "Сортувати вагони";
+        return "Sort wagons";
     }
 
     @Override
     public void execute(String parameter) {
-        Menu sortMenu = new Menu("Сортування вагонів");
+        Menu sortMenu = new Menu("Sort wagons");
         sortMenu.addCommand("1", new SortByComfortCommand(train));
         sortMenu.addCommand("2", new SortByPassengersCommand(train));
         sortMenu.run();
     }
 
-    /**
-     * Вложена команда для сортування за комфортом
-     */
     private static class SortByComfortCommand implements cli.Command {
         private Train train;
         private TrainService trainService;
@@ -43,19 +37,16 @@ public class SortCommand extends TrainCommand {
 
         @Override
         public String getDesc() {
-            return "За рівнем комфорту";
+            return "By comfort level";
         }
 
         @Override
         public void execute(String parameter) {
             trainService.sortWagonsByComfort(train);
-            System.out.println("✓ Вагони відсортовані!");
+            System.out.println("Wagons sorted!");
         }
     }
 
-    /**
-     * Вложена команда для сортування за кількістю пасажирів
-     */
     private static class SortByPassengersCommand implements cli.Command {
         private Train train;
         private TrainService trainService;
@@ -67,13 +58,13 @@ public class SortCommand extends TrainCommand {
 
         @Override
         public String getDesc() {
-            return "За кількістю пасажирів";
+            return "By passenger count";
         }
 
         @Override
         public void execute(String parameter) {
             trainService.sortWagonsByPassengers(train);
-            System.out.println("✓ Вагони відсортовані!");
+            System.out.println("Wagons sorted!");
         }
     }
 }

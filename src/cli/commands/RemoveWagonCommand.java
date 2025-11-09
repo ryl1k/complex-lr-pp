@@ -1,12 +1,10 @@
 package cli.commands;
 
+import cli.InputValidator;
 import model.Train;
 import model.Wagon;
 import java.util.Scanner;
 
-/**
- * Команда для видалення вагона
- */
 public class RemoveWagonCommand extends TrainCommand {
     public RemoveWagonCommand(Train train, Scanner scanner) {
         super(train, scanner);
@@ -14,21 +12,20 @@ public class RemoveWagonCommand extends TrainCommand {
 
     @Override
     public String getDesc() {
-        return "Видалити вагон";
+        return "Remove wagon";
     }
 
     @Override
     public void execute(String parameter) {
-        System.out.print("Введіть ID вагона для видалення: ");
-        int id = Integer.parseInt(scanner.nextLine());
+        int id = InputValidator.readPositiveInt(scanner, "Enter wagon ID to remove: ");
 
         Wagon wagon = train.getWagonById(id);
         if (wagon == null) {
-            System.out.println("✗ Вагон з ID " + id + " не знайдено!");
+            System.out.println("Wagon with ID " + id + " not found!");
             return;
         }
 
         train.removeWagon(id);
-        System.out.println("✓ Вагон видалено!");
+        System.out.println("Wagon removed!");
     }
 }

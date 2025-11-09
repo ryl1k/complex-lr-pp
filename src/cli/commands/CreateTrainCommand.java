@@ -3,9 +3,6 @@ package cli.commands;
 import model.Train;
 import java.util.Scanner;
 
-/**
- * Команда для створення нового поїзда
- */
 public class CreateTrainCommand extends TrainCommand {
     public CreateTrainCommand(Train train, Scanner scanner) {
         super(train, scanner);
@@ -13,20 +10,20 @@ public class CreateTrainCommand extends TrainCommand {
 
     @Override
     public String getDesc() {
-        return "Створити новий поїзд";
+        return "Create new train";
     }
 
     @Override
     public void execute(String parameter) {
-        System.out.print("Введіть назву поїзда: ");
+        System.out.print("Enter train name: ");
         String name = scanner.nextLine();
-        System.out.print("Введіть напрямок: ");
+        System.out.print("Enter destination: ");
         String destination = scanner.nextLine();
 
         train.setName(name);
         train.setDestination(destination);
         train.getWagons().clear();
 
-        System.out.println("✓ Новий поїзд '" + name + "' створено!");
+        System.out.println("New train '" + name + "' created!");
     }
 }

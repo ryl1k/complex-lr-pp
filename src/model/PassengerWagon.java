@@ -1,8 +1,5 @@
 package model;
 
-/**
- * Підклас Wagon для звичайних пасажирських вагонів
- */
 public class PassengerWagon extends Wagon {
     private boolean hasWiFi;
     private boolean hasAirConditioning;

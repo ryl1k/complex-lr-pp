@@ -4,9 +4,6 @@ import model.Train;
 import service.TrainService;
 import java.util.Scanner;
 
-/**
- * Команда для виведення статистики поїзда
- */
 public class StatisticsCommand extends TrainCommand {
     private TrainService trainService;
 
@@ -17,7 +14,7 @@ public class StatisticsCommand extends TrainCommand {
 
     @Override
     public String getDesc() {
-        return "Показати статистику";
+        return "Show statistics";
     }
 
     @Override

@@ -1,13 +1,11 @@
 package cli.commands;
 
 import cli.Menu;
+import cli.InputValidator;
 import model.Wagon;
 import model.Train;
 import java.util.Scanner;
 
-/**
- * Команда для редагування вагона
- */
 public class EditWagonCommand extends TrainCommand {
     public EditWagonCommand(Train train, Scanner scanner) {
         super(train, scanner);
@@ -15,21 +13,20 @@ public class EditWagonCommand extends TrainCommand {
 
     @Override
     public String getDesc() {
-        return "Редагувати вагон";
+        return "Edit wagon";
     }
 
     @Override
     public void execute(String parameter) {
-        System.out.print("Введіть ID вагона для редагування: ");
-        int id = Integer.parseInt(scanner.nextLine());
+        int id = InputValidator.readPositiveInt(scanner, "Enter wagon ID to edit: ");
 
         Wagon wagon = train.getWagonById(id);
         if (wagon == null) {
-            System.out.println("✗ Вагон з ID " + id + " не знайдено!");
+            System.out.println("Wagon with ID " + id + " not found!");
             return;
         }
 
-        Menu editMenu = new Menu("Редагування вагона ID=" + id);
+        Menu editMenu = new Menu("Editing wagon ID=" + id);
         editMenu.addCommand("1", new EditTypeCommand(wagon, scanner));
         editMenu.addCommand("2", new EditPassengersCommand(wagon, scanner));
         editMenu.addCommand("3", new EditLuggageCommand(wagon, scanner));
@@ -37,9 +34,6 @@ public class EditWagonCommand extends TrainCommand {
         editMenu.run();
     }
 
-    /**
-     * Вложена команда для редагування типу вагона
-     */
     private static class EditTypeCommand implements cli.Command {
         private Wagon wagon;
         private Scanner scanner;
@@ -51,21 +45,17 @@ public class EditWagonCommand extends TrainCommand {
 
         @Override
         public String getDesc() {
-            return "Змінити тип вагона";
+            return "Change wagon type";
         }
 
         @Override
         public void execute(String parameter) {
-            System.out.print("Введіть новий тип: ");
-            String type = scanner.nextLine();
+            String type = InputValidator.readNonEmptyString(scanner, "Enter new type: ");
             wagon.setType(type);
-            System.out.println("✓ Тип змінено на: " + type);
+            System.out.println("Type changed to: " + type);
         }
     }
 
-    /**
-     * Вложена команда для редагування кількості пасажирів
-     */
     private static class EditPassengersCommand implements cli.Command {
         private Wagon wagon;
         private Scanner scanner;
@@ -77,21 +67,17 @@ public class EditWagonCommand extends TrainCommand {
 
         @Override
         public String getDesc() {
-            return "Змінити кількість пасажирів";
+            return "Change passenger count";
         }
 
         @Override
         public void execute(String parameter) {
-            System.out.print("Введіть нову кількість пасажирів: ");
-            int passengers = Integer.parseInt(scanner.nextLine());
+            int passengers = InputValidator.readPositiveInt(scanner, "Enter new passenger count: ");
             wagon.setPassengerCount(passengers);
-            System.out.println("✓ Кількість пасажирів змінена на: " + passengers);
+            System.out.println("Passenger count changed to: " + passengers);
         }
     }
 
-    /**
-     * Вложена команда для редагування ваги багажу
-     */
     private static class EditLuggageCommand implements cli.Command {
         private Wagon wagon;
         private Scanner scanner;
@@ -103,21 +89,17 @@ public class EditWagonCommand extends TrainCommand {
 
         @Override
         public String getDesc() {
-            return "Змінити вагу багажу";
+            return "Change luggage weight";
         }
 
         @Override
         public void execute(String parameter) {
-            System.out.print("Введіть нову вагу багажу (кг): ");
-            double luggage = Double.parseDouble(scanner.nextLine());
+            double luggage = InputValidator.readPositiveDouble(scanner, "Enter new luggage weight (kg): ");
             wagon.setLuggageWeight(luggage);
-            System.out.println("✓ Вага багажу змінена на: " + luggage + " кг");
+            System.out.println("Luggage weight changed to: " + luggage + " kg");
         }
     }
 
-    /**
-     * Вложена команда для редагування рівня комфорту
-     */
     private static class EditComfortCommand implements cli.Command {
         private Wagon wagon;
         private Scanner scanner;
@@ -129,15 +111,14 @@ public class EditWagonCommand extends TrainCommand {
 
         @Override
         public String getDesc() {
-            return "Змінити рівень комфорту";
+            return "Change comfort level";
         }
 
         @Override
         public void execute(String parameter) {
-            System.out.print("Введіть новий рівень комфорту (1-5): ");
-            int comfort = Integer.parseInt(scanner.nextLine());
+            int comfort = InputValidator.readIntInRange(scanner, "Enter new comfort level (1-5): ", 1, 5);
             wagon.setComfortLevel(comfort);
-            System.out.println("✓ Рівень комфорту змінено на: " + comfort);
+            System.out.println("Comfort level changed to: " + comfort);
         }
     }
 }

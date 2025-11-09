@@ -2,10 +2,7 @@ package cli;
 
 import java.util.*;
 
-/**
- * Клас Menu управляє командами та взаємодією з користувачем
- * Реалізує багаторівневу структуру меню
- */
+// Manages commands and user interaction with multi-level menu structure
 public class Menu implements Command {
     private String title;
     private Map<String, Command> commands;
@@ -19,49 +16,29 @@ public class Menu implements Command {
         this.running = false;
     }
 
-    /**
-     * Додає команду до меню
-     * @param key ключ команди
-     * @param command об'єкт команди
-     */
     public void addCommand(String key, Command command) {
         commands.put(key, command);
     }
 
-    /**
-     * Видаляє команду з меню
-     * @param key ключ команди
-     */
     public void removeCommand(String key) {
         commands.remove(key);
     }
 
-    /**
-     * Повертає опис меню
-     */
     @Override
     public String getDesc() {
         return title;
     }
 
-    /**
-     * Запускає меню (основний цикл)
-     * Параметр не використовується для кореневого меню
-     */
     @Override
     public void execute(String parameter) {
         run();
     }
 
-    /**
-     * Запускає цикл меню
-     * Циклічно запитує користувача про команди та виконує їх
-     */
     public void run() {
         running = true;
         while (running) {
             displayMenu();
-            System.out.print("Введіть команду: ");
+            System.out.print("Enter command: ");
             String input = scanner.nextLine().trim();
 
             if (input.equalsIgnoreCase("help")) {
@@ -70,12 +47,12 @@ public class Menu implements Command {
             }
 
             if (input.equalsIgnoreCase("exit")) {
-                System.out.println("Вихід з меню...");
+                System.out.println("Exiting menu...");
                 running = false;
                 continue;
             }
 
-            // Розділяємо введення на ключ команди і параметри
+            // Split input into command key and parameters
             String[] parts = input.split(" ", 2);
             String commandKey = parts[0];
             String parameter = parts.length > 1 ? parts[1] : "";
@@ -85,49 +62,40 @@ public class Menu implements Command {
                 try {
                     command.execute(parameter);
                 } catch (Exception e) {
-                    System.out.println("Помилка при виконанні команди: " + e.getMessage());
+                    System.out.println("Error executing command: " + e.getMessage());
                 }
             } else {
-                System.out.println("Невідома команда: " + commandKey);
-                System.out.println("Введіть 'help' для списку команд або 'exit' для виходу.");
+                System.out.println("Unknown command: " + commandKey);
+                System.out.println("Type 'help' for command list or 'exit' to quit.");
             }
         }
     }
 
-    /**
-     * Виводить меню з усіма доступними командами
-     */
     private void displayMenu() {
-        System.out.println("\n╔════════════════════════════════════╗");
-        System.out.println("║  " + centerText(title, 32) + "  ║");
-        System.out.println("╚════════════════════════════════════╝");
-        System.out.println("Доступні команди:");
+        System.out.println("\n====================================");
+        System.out.println("  " + centerText(title, 32) + "  ");
+        System.out.println("====================================");
+        System.out.println("Available commands:");
         for (String key : commands.keySet()) {
             Command cmd = commands.get(key);
             System.out.println("  " + String.format("%-15s", key) + " - " + cmd.getDesc());
         }
-        System.out.println("  " + String.format("%-15s", "help") + " - Показати цю справку");
-        System.out.println("  " + String.format("%-15s", "exit") + " - Вийти з меню");
+        System.out.println("  " + String.format("%-15s", "help") + " - Show this help");
+        System.out.println("  " + String.format("%-15s", "exit") + " - Exit menu");
     }
 
-    /**
-     * Показує довідку з описом команд
-     */
     private void showHelp() {
-        System.out.println("\n=== ДОВІДКА ===");
-        System.out.println("Доступні команди:");
+        System.out.println("\n=== HELP ===");
+        System.out.println("Available commands:");
         for (String key : commands.keySet()) {
             Command cmd = commands.get(key);
             System.out.println("  " + key + " - " + cmd.getDesc());
         }
-        System.out.println("  help - Показати цю справку");
-        System.out.println("  exit - Вийти з меню");
+        System.out.println("  help - Show this help");
+        System.out.println("  exit - Exit menu");
         System.out.println("================\n");
     }
 
-    /**
-     * Центрує текст в межах заданої ширини
-     */
     private String centerText(String text, int width) {
         if (text.length() >= width) {
             return text.substring(0, width);
@@ -136,23 +104,14 @@ public class Menu implements Command {
         return String.format("%" + (text.length() + padding) + "s%-" + (width - text.length() - padding) + "s", text, "");
     }
 
-    /**
-     * Зупиняє цикл меню
-     */
     public void stop() {
         running = false;
     }
 
-    /**
-     * Повертає Scanner для введення даних
-     */
     public Scanner getScanner() {
         return scanner;
     }
 
-    /**
-     * Повертає Map команд
-     */
     public Map<String, Command> getCommands() {
         return commands;
     }

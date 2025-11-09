@@ -3,9 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Клас, що агрегує об'єкти Wagon і містить методи для керування складом поїзда
- */
 public class Train {
     private String name;
     private String destination;
@@ -70,12 +67,12 @@ public class Train {
 
     public void printAllWagons() {
         if (wagons.isEmpty()) {
-            System.out.println("Немає вагонів у складі!");
+            System.out.println("No wagons in the train!");
             return;
         }
-        System.out.println("\n=== Склад поїзда: " + name + " ===");
-        System.out.println("Напрямок: " + destination);
-        System.out.println("Кількість вагонів: " + wagons.size());
+        System.out.println("\n=== Train composition: " + name + " ===");
+        System.out.println("Destination: " + destination);
+        System.out.println("Wagon count: " + wagons.size());
         System.out.println("-----------------------------------------");
         for (Wagon wagon : wagons) {
             System.out.println(wagon);

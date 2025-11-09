@@ -2,27 +2,27 @@ import cli.Menu;
 import cli.commands.*;
 import model.Train;
 import java.util.Scanner;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+import java.io.FileInputStream;
+import java.io.IOException;
 
-/**
- * Головна точка входу до програми
- * Програма для управління складом пасажирського поїзда
- * Використовує паттерн Command для керування операціями
- */
 public class Main {
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
+
     public static void main(String[] args) {
-        System.out.println("╔════════════════════════════════════╗");
-        System.out.println("║   МЕНЕДЖЕР СКЛАДУ ПАСАЖИРСЬКОГО    ║");
-        System.out.println("║              ПОЇЗДА               ║");
-        System.out.println("╚════════════════════════════════════╝\n");
+        initializeLogging();
+        logger.info("========== APPLICATION START ==========");
 
-        // Створюємо поїзд та сканер для введення
-        Train train = new Train("Новий поїзд", "Невідома");
+        System.out.println("====================================");
+        System.out.println("   PASSENGER TRAIN MANAGER          ");
+        System.out.println("====================================\n");
+
+        Train train = new Train("New Train", "Unknown");
         Scanner scanner = new Scanner(System.in);
+        logger.info("Created new train: " + train.getName());
 
-        // Створюємо головне меню
-        Menu mainMenu = new Menu("ГОЛОВНЕ МЕНЮ");
-
-        // Додаємо команди до меню
+        Menu mainMenu = new Menu("MAIN MENU");
         mainMenu.addCommand("load", new LoadCommand(train, scanner));
         mainMenu.addCommand("create", new CreateTrainCommand(train, scanner));
         mainMenu.addCommand("show", new ShowWagonsCommand(train, scanner));
@@ -34,9 +34,21 @@ public class Main {
         mainMenu.addCommand("find", new FindCommand(train, scanner));
         mainMenu.addCommand("save", new SaveCommand(train, scanner));
 
-        // Запускаємо меню
+        logger.info("Starting main menu");
         mainMenu.run();
 
+        logger.info("========== APPLICATION SHUTDOWN ==========");
         scanner.close();
+    }
+
+    // Load logging config from file - falls back to defaults if file not found
+    private static void initializeLogging() {
+        try (FileInputStream configFile = new FileInputStream("logging.properties")) {
+            LogManager.getLogManager().readConfiguration(configFile);
+            System.out.println("Logging initialized successfully\n");
+        } catch (IOException e) {
+            System.err.println("Failed to load logging.properties, using default settings");
+            System.err.println("Error: " + e.getMessage() + "\n");
+        }
     }
 }

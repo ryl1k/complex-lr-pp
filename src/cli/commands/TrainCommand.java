@@ -4,9 +4,7 @@ import cli.Command;
 import model.Train;
 import java.util.Scanner;
 
-/**
- * Абстрактний клас для команд, які працюють з поїздом
- */
+// Base class for commands that work with a train
 public abstract class TrainCommand implements Command {
     protected Train train;
     protected Scanner scanner;
@@ -16,9 +14,6 @@ public abstract class TrainCommand implements Command {
         this.scanner = scanner;
     }
 
-    /**
-     * Встановлює новий поїзд
-     */
     public void setTrain(Train train) {
         this.train = train;
     }

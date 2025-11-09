@@ -4,9 +4,6 @@ import model.Train;
 import service.FileService;
 import java.util.Scanner;
 
-/**
- * Команда для завантаження поїзда з файлу
- */
 public class LoadCommand extends TrainCommand {
     private FileService fileService;
 
@@ -17,27 +14,27 @@ public class LoadCommand extends TrainCommand {
 
     @Override
     public String getDesc() {
-        return "Завантажити поїзд";
+        return "Load train";
     }
 
     @Override
     public void execute(String parameter) {
-        System.out.print("Введіть назву файлу (без розширення): ");
+        System.out.print("Enter filename (without extension): ");
         String filename = scanner.nextLine();
-        System.out.print("Введіть назву поїзда: ");
+        System.out.print("Enter train name: ");
         String name = scanner.nextLine();
-        System.out.print("Введіть напрямок: ");
+        System.out.print("Enter destination: ");
         String destination = scanner.nextLine();
 
         fileService.setFilePath(filename + ".csv");
         Train loadedTrain = fileService.loadFromCSV(name, destination);
 
-        // Заміняємо поточний поїзд завантаженим
+        // Replace current train with loaded data
         train.setName(loadedTrain.getName());
         train.setDestination(loadedTrain.getDestination());
         train.getWagons().clear();
         train.getWagons().addAll(loadedTrain.getWagons());
 
-        System.out.println("✓ Поїзд завантажено!");
+        System.out.println("Train loaded!");
     }
 }
